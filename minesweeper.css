@@ -4,19 +4,23 @@
   grid-template-columns: repeat(var(--grid-columns), 1fr);
   width: 300px;
 }
-body{
-    background-color:gray;
+body {
+  background-color: gray;
 }
-.main {  /* This is one way of getting the object into the center
-  */
+.main {
   display: flex;
   text-align: center;
+  /* To make items in the middle look down. Justify is making main axis center, while align items is making cross axis center.
+  */
   justify-content: center;
   align-items: center;
 }
 .cell {
+  display: flex;
   height: 50px;
   width: 50px;
+  justify-content: center;
+  align-items: center;
   border-style: solid;
   border-width: 1px;
   border-color: black;
@@ -26,6 +30,44 @@ body{
   background-color: blue;
 }
 
+#reset {
+  position: absolute;
+  display: flex;
+  left: 50%;
+  bottom: 10%;
+  text-align: center;
+  background-color: red;
+  color: black;
+  border: black;
+  font-size: 60px;
+  font-weight: bold;
+  padding: 10px;
+}
+
+#reveal {
+  position: absolute;
+  display: flex;
+  text-align: center;
+  left: 50%;
+  bottom: 0%;
+  background-color: red;
+  color: black;
+  border: black;
+  font-size: 60px;
+  font-weight: bold;
+  padding: 10px;
+}
+#state {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  color: black;
+  background-color: red;
+  border: black;
+  font-size: 60px;
+  padding: 10px;
+}
+/*
 #reset {
   position: absolute;
   display: flex;
@@ -41,7 +83,7 @@ body{
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
-#reveal{
+#reveal {
   position: absolute;
   display: flex;
   text-align: center;
@@ -54,4 +96,4 @@ body{
   font-weight: bold;
   padding: 10px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-}
+}*/
