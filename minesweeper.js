@@ -8,10 +8,13 @@ let rows = 10;
 let columns = 10;
 let count = 10;
 
+//Research
 window.onload = function () {
   createGame();
   generateBombs();
 };
+
+//Tried making this function for 3 hours. I was so close. Ended using Chatgpt to fix it.
 function createGame() {
   num = 1;
   game.style.setProperty("--grid-rows", rows.toString());
@@ -33,39 +36,43 @@ function createGame() {
     }
   }
 }
-
+//Research
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
-
+//Self
 function resetGame() {
   for (let i = 1; i <= rows; i++) {
     for (let j = 1; j <= columns; j++) {
-      window[i + "." + j].setAttribute("mineData", "false");
-      window[i + "." + j].style.backgroundColor = "red";
-      window[i + "." + j].innerText = "";
+      let cell = document.getElementById(i + "." + j);
+      cell.setAttribute("mineData", "false");
+      cell.style.backgroundColor = "red";
+      cell.innerText = "";
     }
   }
   state.innerText = "Play Game";
   generateBombs();
 }
+//Self
 function generateBombs() {
   var percentage = (count / (rows * columns)) * 100;
   for (let i = 1; i <= rows; i++) {
     for (let j = 1; j <= columns; j++) {
       var p = getRandomInt(rows * columns);
       if (p <= percentage) {
-        window[i + "." + j].style.backgroundColor = "black";
-        window[i + "." + j].setAttribute("mineData", "true");
+        let cell = document.getElementById(i + "." + j);
+        cell.style.backgroundColor = "black";
+        cell.setAttribute("mineData", "true");
       }
     }
   }
 }
+//Research with self
 function checkTile(e, row, column) {
   let tile = e.target;
   if (tile.getAttribute("mineData") == "true") {
-    alert("You Lose!");
     state.innerText = "You Lose!";
+    resetGame();
   } else {
     tile.style.backgroundColor = "green";
     let position = tile.id.split(".");
@@ -75,56 +82,58 @@ function checkTile(e, row, column) {
     column = parseInt(column);
     var numberOfBombs = checkAround(row, column);
     if (numberOfBombs == 0) {
+      tile.innerText = numberOfBombs;
       spread(row, column);
     } else {
       tile.innerText = numberOfBombs;
     }
   }
 }
+
 function spread(row, column) {
   return;
 }
+//self, research, and chatgpt fix
 function check(row, column) {
   //console.log(typeof row);
   //console.log(typeof column);
-  if (window[row + "." + column].getAttribute("mineData") == "true") {
+  var cell = document.getElementById(row + "." + column);
+  if (cell && cell.getAttribute("mineData") === "true") {
     return true;
   }
   return false;
 }
-
+//research, chatgpt fix
 function checkAround(row, column) {
   //console.log(row + "." + column);
-
   var amount = 0;
-  for (i = -1; i < 2; i++) {
-    for (j = -1; j < 2; j++) {
-      if (i != 0 && j != 0) {
-        rx = row + i;
-        ry = column + j;
-        console.log(typeof rx);
-        console.log(typeof ry);
-        if (rx >= 0 && ry >= 0 && rx < rows && ry < columns) {
-          if (check(rx, ry)) {
-            amount += 1;
-          }
+  for (let i = -1; i <= 1; i++) {
+    for (let j = -1; j <= 1; j++) {
+      if (i === 0 && j === 0) {
+        continue;
+      }
+      let rx = row + i;
+      let ry = column + j;
+      if (rx > 0 && ry > 0 && rx <= rows && ry <= columns) {
+        if (check(rx, ry)) {
+          amount += 1;
         }
       }
     }
-    return amount;
   }
+  return amount;
 }
-
+//self
 function revealGame(e) {
   var num = 1;
   for (let i = 1; i <= rows; i++) {
     for (let j = 1; j <= columns; j++) {
-      var s = window[i + "." + j];
-      if (s.getAttribute("mineData") == "true") {
-        s.innerText = "💣";
-        s.style.backgroundColor = "green";
+      var cell = document.createElement(i + "." + j);
+      if (cell.getAttribute("mineData") == "true") {
+        cell.innerText = "💣";
+        cell.style.backgroundColor = "green";
       } else {
-        s.innerText = num;
+        cell.innerText = num;
       }
       num += 1;
     }
@@ -135,25 +144,24 @@ function a() {
 }
 
 //Developer functions
+//self
 function devGame() {
   console.log("Opened devGame");
-  for (let i = 1; i < rows; i++) {
-    for (let j = 1; j < columns; j++) {
-      console.log(window[i + "." + j]);
-      if (!window[i + "." + j].getAttribute("mineData") == "true") {
-        var numberOfBombs = checkAround(i, j);
-        if (numberOfBombs == 0) {
-          spread(i, j);
-        } else {
-          window[i + "." + j].innerText = numberOfBombs;
-        }
-      } 
-        
+  for (let i = 1; i <= rows; i++) {
+    for (let j = 1; j <= columns; j++) {
+      var cell = document.getElementById(i + "." + j);
+      if (cell.getAttribute("mineData") == "true") {
+        continue;
+      }
+      var numberOfBombs = checkAround(i, j);
+      if (numberOfBombs == 0) {
+        spread(i, j);
+      }
+      cell.innerText = numberOfBombs;
+      cell.style.backgroundColor = "green";
     }
   }
 }
-
-
 
 reset.addEventListener("keypress", a);
 reset.addEventListener("click", resetGame);
