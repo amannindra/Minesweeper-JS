@@ -46,7 +46,7 @@ function resetGame() {
     for (let j = 1; j <= columns; j++) {
       let cell = document.getElementById(i + "." + j);
       cell.setAttribute("mineData", "false");
-      cell.style.backgroundColor = "red";
+      cell.style.backgroundColor = "#ADD8E6";
       cell.innerText = "";
     }
   }
@@ -61,7 +61,6 @@ function generateBombs() {
       var p = getRandomInt(rows * columns);
       if (p <= percentage) {
         let cell = document.getElementById(i + "." + j);
-        cell.style.backgroundColor = "black";
         cell.setAttribute("mineData", "true");
       }
     }
@@ -72,7 +71,7 @@ function checkTile(e, row, column) {
   let tile = e.target;
   if (tile.getAttribute("mineData") == "true") {
     state.innerText = "You Lose!";
-    resetGame();
+    //resetGame();
   } else {
     tile.style.backgroundColor = "green";
     let position = tile.id.split(".");
@@ -124,14 +123,14 @@ function checkAround(row, column) {
   return amount;
 }
 //self
-function revealGame(e) {
+function devGame(e) {
   var num = 1;
   for (let i = 1; i <= rows; i++) {
     for (let j = 1; j <= columns; j++) {
-      var cell = document.createElement(i + "." + j);
+      var cell = document.getElementById(i + "." + j);
       if (cell.getAttribute("mineData") == "true") {
         cell.innerText = "💣";
-        cell.style.backgroundColor = "green";
+        cell.style.backgroundColor = "red";
       } else {
         cell.innerText = num;
       }
@@ -145,20 +144,22 @@ function a() {
 
 //Developer functions
 //self
-function devGame() {
+function revealGame() {
   console.log("Opened devGame");
   for (let i = 1; i <= rows; i++) {
     for (let j = 1; j <= columns; j++) {
       var cell = document.getElementById(i + "." + j);
-      if (cell.getAttribute("mineData") == "true") {
-        continue;
-      }
       var numberOfBombs = checkAround(i, j);
+      if (cell.getAttribute("mineData") === "true") {
+        cell.innerText = "💣";
+        cell.style.backgroundColor = "red";
+      } else {
+        cell.innerText = numberOfBombs;
+        cell.style.backgroundColor = "green";
+      }
       if (numberOfBombs == 0) {
         spread(i, j);
       }
-      cell.innerText = numberOfBombs;
-      cell.style.backgroundColor = "green";
     }
   }
 }

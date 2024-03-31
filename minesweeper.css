@@ -24,7 +24,7 @@ body {
   border-style: solid;
   border-width: 1px;
   border-color: black;
-  background: red;
+  background: #ADD8E6;
 }
 .cell:hover {
   background-color: blue;
