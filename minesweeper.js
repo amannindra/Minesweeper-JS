@@ -4,11 +4,12 @@ reveal = document.getElementById("reveal");
 state = document.getElementById("state");
 dev = document.getElementById("developer");
 flag = document.getElementById("getFlag");
-var testMode = false;
+checkWin = document.getElementById("checkWin");
+let flagMode = false;
 let rows = 10;
 let columns = 10;
-let count = 10;
-
+let count = 15;
+let bombCount = 0;
 
 //Research
 window.onload = function () {
@@ -57,6 +58,8 @@ function resetGame() {
       cell.setAttribute("flagData", "false");
     }
   }
+  checkWin.innerText = "Check";
+  bombCount = 0;
   state.innerText = "Play Game";
   generateBombs();
 }
@@ -69,23 +72,44 @@ function generateBombs() {
       if (p <= percentage) {
         let cell = document.getElementById(i + "." + j);
         cell.setAttribute("mineData", "true");
+        bombCount += 1;
       }
     }
   }
 }
 //Research with self
 function checkCell(e, row, column) {
-  if (state.innerText == "You Lose!") {
+  checkWin.innerText = "Check";
+  if (
+    state.innerText === "You Lose!" ||
+    state.innerText === "You Won!" ||
+    state.innerText === "Revealed!"
+  ) {
     console.log("inner");
     state.innerText = "Play Game";
     resetGame();
+    return;
+  }
+  let cell = e.target;
+  if (cell.innerText == "🚩") {
+    console.log("check");
+    cell.innerText = "";
+  } else if (flagMode && cell.innerText == "") {
+    cell.setAttribute("flagData", "true");
+    cell.innerText = "🚩";
   } else {
-    let cell = e.target;
-    cell.setAttribute("isRevealedData", "true");
+    if (
+      cell.getAttribute("mineData") == "true" &&
+      cell.getAttribute("flagData") === "true"
+    ) {
+      cell.innerText = "";
+      return;
+    }
     if (cell.getAttribute("mineData") == "true") {
       state.innerText = "You Lose!";
       revealGame();
     } else {
+      cell.setAttribute("isRevealedData", "true");
       cell.style.backgroundColor = "green";
       let position = cell.id.split(".");
       let row = position[0];
@@ -94,7 +118,6 @@ function checkCell(e, row, column) {
       column = parseInt(column);
       var numberOfBombs = checkAround(row, column);
       if (numberOfBombs == 0) {
-        cell.innerText = numberOfBombs;
         spread(row, column);
       } else {
         cell.innerText = numberOfBombs;
@@ -106,30 +129,32 @@ function checkCell(e, row, column) {
 function spread(row, column) {
   for (let i = -1; i <= 1; i++) {
     for (let j = -1; j <= 1; j++) {
+      let rx = row + i;
+      let ry = column + j;
       if (i === 0 && j === 0) {
         continue;
       }
-      let rx = row + i;
-      let ry = column + j;
-      var r = document.getElementById(rx + "." + ry);
       if (rx > 0 && ry > 0 && rx <= rows && ry <= columns) {
-        if (!check(rx, ry)) {
-          if (
-            checkAround(rx, ry) === 0 &&
-            r.getAttribute("isRevealedData") === "false"
-          ) {
-            console.log(rx, ry);
-            var r = document.getElementById(rx + "." + ry);
-            r.innerText = 0;
-            r.style.backgroundColor = "green";
-            r.setAttribute("isRevealedData", "true");
+        var cell = document.getElementById(rx + "." + ry);
+        if (
+          cell.getAttribute("flagData") === "false" &&
+          cell.getAttribute("isRevealedData") === "false"
+        ) {
+          let = bombsAround = checkAround(rx, ry);
+          if (bombsAround === 0) {
+            cell.innerText = "";
+            cell.style.backgroundColor = "green";
+            cell.setAttribute("isRevealedData", "true");
             spread(rx, ry);
+          } else {
+            cell.innerText = bombsAround;
+            cell.style.backgroundColor = "green";
+            cell.setAttribute("isRevealedData", "true");
           }
         }
       }
     }
   }
-  return;
 }
 //self, research, and chatgpt fix
 function check(row, column) {
@@ -201,15 +226,48 @@ function revealGame() {
       }
     }
   }
+  checkWin.innerText = "Check";
+  state.innerText = "You Lose!";
 }
-function enableflag(){
-
+function enableflag() {
+  flagMode = !flagMode;
+  if (flagMode) {
+    flag.innerText = "🚩on";
+  } else {
+    flag.innerText = "🚩off";
+  }
+}
+function didYouWin() {
+  var win = 0;
+  for (let i = 1; i <= rows; i++) {
+    for (let j = 1; j <= columns; j++) {
+      var cell = document.getElementById(i + "." + j);
+      console.log("before if");
+      if (
+        cell.getAttribute("mineData") === "true" &&
+        cell.getAttribute("flagData") === "true"
+      ) {
+        win += 1;
+        console.log(win);
+      } 
+    }
+  }
+  console.log("BombCount: "+bombCount);
+  console.log("win: "+win);
+  if (win === bombCount) {
+    state.innerText = "You Won!";
+    flag.innerText = "You Win!";
+  }
+  else{
+    state.innerText = "You Lose!"
+  }
 }
 reset.addEventListener("keypress", a);
 reset.addEventListener("click", resetGame);
 reveal.addEventListener("click", revealGame);
 dev.addEventListener("click", devGame);
 flag.addEventListener("click", enableflag);
+checkWin.addEventListener("click", didYouWin);
 /*
 function generateBombs(){
   var done = false;
