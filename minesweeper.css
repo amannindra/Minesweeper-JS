@@ -2,7 +2,6 @@
   display: grid;
   grid-template-rows: repeat(var(--grid-rows), 1fr);
   grid-template-columns: repeat(var(--grid-columns), 1fr);
-  width: 300px;
 }
 body {
   background-color: gray;
@@ -24,7 +23,7 @@ body {
   border-style: solid;
   border-width: 1px;
   border-color: black;
-  background: #ADD8E6;
+  background: #add8e6;
 }
 .cell:hover {
   background-color: blue;
@@ -32,7 +31,6 @@ body {
 
 #reset {
   position: absolute;
-  display: flex;
   left: 50%;
   bottom: 10%;
   text-align: center;
@@ -66,6 +64,10 @@ body {
   border: black;
   font-size: 60px;
   padding: 10px;
+}
+#getFlag {
+  display: flex;
+  justify-content: center;
 }
 /*
 #reset {

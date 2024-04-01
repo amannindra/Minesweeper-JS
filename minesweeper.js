@@ -3,10 +3,12 @@ reset = document.getElementById("reset");
 reveal = document.getElementById("reveal");
 state = document.getElementById("state");
 dev = document.getElementById("developer");
+flag = document.getElementById("getFlag");
 var testMode = false;
 let rows = 10;
 let columns = 10;
 let count = 10;
+
 
 //Research
 window.onload = function () {
@@ -25,13 +27,16 @@ function createGame() {
       td.classList.add("cell");
       td.textContent = "";
       td.id = x + "." + y;
-      td.addEventListener("click", checkTile);
+      td.addEventListener("click", checkCell);
       var mine = document.createAttribute("mineData");
-      var isRevealed = document.createAttribute("revealData");
-      isRevealed.value = "false";
+      var flag = document.createAttribute("flagData");
+      var isRevealed = document.createAttribute("isRevealedData");
+      flag.value = "false";
       mine.value = "false";
-      td.setAttributeNode(isRevealed);
+      isRevealed.value = "false";
+      td.setAttributeNode(flag);
       td.setAttributeNode(mine);
+      td.setAttributeNode(isRevealed);
       game.append(td);
     }
   }
@@ -48,6 +53,8 @@ function resetGame() {
       cell.setAttribute("mineData", "false");
       cell.style.backgroundColor = "#ADD8E6";
       cell.innerText = "";
+      cell.setAttribute("isRevealedData", "false");
+      cell.setAttribute("flagData", "false");
     }
   }
   state.innerText = "Play Game";
@@ -67,29 +74,61 @@ function generateBombs() {
   }
 }
 //Research with self
-function checkTile(e, row, column) {
-  let tile = e.target;
-  if (tile.getAttribute("mineData") == "true") {
-    state.innerText = "You Lose!";
-    //resetGame();
+function checkCell(e, row, column) {
+  if (state.innerText == "You Lose!") {
+    console.log("inner");
+    state.innerText = "Play Game";
+    resetGame();
   } else {
-    tile.style.backgroundColor = "green";
-    let position = tile.id.split(".");
-    let row = position[0];
-    let column = position[1];
-    row = parseInt(row);
-    column = parseInt(column);
-    var numberOfBombs = checkAround(row, column);
-    if (numberOfBombs == 0) {
-      tile.innerText = numberOfBombs;
-      spread(row, column);
+    let cell = e.target;
+    cell.setAttribute("isRevealedData", "true");
+    if (cell.getAttribute("mineData") == "true") {
+      state.innerText = "You Lose!";
+      revealGame();
     } else {
-      tile.innerText = numberOfBombs;
+      cell.style.backgroundColor = "green";
+      let position = cell.id.split(".");
+      let row = position[0];
+      let column = position[1];
+      row = parseInt(row);
+      column = parseInt(column);
+      var numberOfBombs = checkAround(row, column);
+      if (numberOfBombs == 0) {
+        cell.innerText = numberOfBombs;
+        spread(row, column);
+      } else {
+        cell.innerText = numberOfBombs;
+      }
     }
   }
 }
 
 function spread(row, column) {
+  for (let i = -1; i <= 1; i++) {
+    for (let j = -1; j <= 1; j++) {
+      if (i === 0 && j === 0) {
+        continue;
+      }
+      let rx = row + i;
+      let ry = column + j;
+      var r = document.getElementById(rx + "." + ry);
+      if (rx > 0 && ry > 0 && rx <= rows && ry <= columns) {
+        if (!check(rx, ry)) {
+          if (
+            checkAround(rx, ry) === 0 &&
+            r.getAttribute("isRevealedData") === "false"
+          ) {
+            console.log(rx, ry);
+            var r = document.getElementById(rx + "." + ry);
+            r.innerText = 0;
+            r.style.backgroundColor = "green";
+            r.setAttribute("isRevealedData", "true");
+            spread(rx, ry);
+          }
+        }
+      }
+    }
+  }
   return;
 }
 //self, research, and chatgpt fix
@@ -163,11 +202,14 @@ function revealGame() {
     }
   }
 }
+function enableflag(){
 
+}
 reset.addEventListener("keypress", a);
 reset.addEventListener("click", resetGame);
 reveal.addEventListener("click", revealGame);
 dev.addEventListener("click", devGame);
+flag.addEventListener("click", enableflag);
 /*
 function generateBombs(){
   var done = false;

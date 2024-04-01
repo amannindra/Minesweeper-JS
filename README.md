@@ -13,6 +13,9 @@ It is 11pm, throughout the last few hours, I have been dozing between youtube an
 
 By the way, all of the commented functions are failed versions of what I was trying to achieve.
 
+
+It is 3:42 pm March 31, I was too lazy to do anything in the morning. I am starting to work on the project now.
+
 Sources:
 https://stackoverflow.com/questions/45208347/create-a-10x10-field-of-cells
 
