@@ -124,6 +124,7 @@ function checkCell(e, row, column) {
       }
     }
   }
+  didYouWin();
 }
 
 function spread(row, column) {
