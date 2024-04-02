@@ -16,6 +16,10 @@ By the way, all of the commented functions are failed versions of what I was try
 
 It is 3:42 pm March 31, I was too lazy to do anything in the morning. I am starting to work on the project now.
 
+I have officially finished this project at 4:00 pm today. I had to use chatgpt to fix the spread function, but other than that every else I did today was done by me.
+
+By the way, I know my code is shit. If you can, please fix my code and make it better.
+
 Sources:
 https://stackoverflow.com/questions/45208347/create-a-10x10-field-of-cells
 
