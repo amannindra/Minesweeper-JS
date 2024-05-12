@@ -20,6 +20,13 @@ I have officially finished this project at 4:00 pm today. I had to use chatgpt t
 
 By the way, I know my code is shit. If you can, please fix my code and make it better.
 
+
+Date: May 12, 2024
+
+Time: 9:06
+
+I came back to the minesweeper website to check how to make the grid for the chess app. I am currently making. Upon playing the minesweeper, I found out there is a huge bug, so I spent the last 20 min trying to fix the bug. It is fixed, and now should work.
+
 Sources:
 https://stackoverflow.com/questions/45208347/create-a-10x10-field-of-cells
 

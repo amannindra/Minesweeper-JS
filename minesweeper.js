@@ -106,6 +106,7 @@ function checkCell(e, row, column) {
       return;
     }
     if (cell.getAttribute("mineData") == "true") {
+      console.log("This Change 'You Lose': CheckCell  " )
       state.innerText = "You Lose!";
       revealGame();
     } else {
@@ -228,6 +229,7 @@ function revealGame() {
     }
   }
   checkWin.innerText = "Check";
+  console.log("Title 'You Lose': revealGame")
   state.innerText = "You Lose!";
 }
 function enableflag() {
@@ -243,7 +245,6 @@ function didYouWin() {
   for (let i = 1; i <= rows; i++) {
     for (let j = 1; j <= columns; j++) {
       var cell = document.getElementById(i + "." + j);
-      console.log("before if");
       if (
         cell.getAttribute("mineData") === "true" &&
         cell.getAttribute("flagData") === "true"
@@ -253,14 +254,9 @@ function didYouWin() {
       } 
     }
   }
-  console.log("BombCount: "+bombCount);
-  console.log("win: "+win);
   if (win === bombCount) {
     state.innerText = "You Won!";
     flag.innerText = "You Win!";
-  }
-  else{
-    state.innerText = "You Lose!"
   }
 }
 reset.addEventListener("keypress", a);
