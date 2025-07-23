@@ -5,22 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Minesweeper</title>
     <link rel="stylesheet" href="minesweeper.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <p id="state">Play Game</p>
-    <button id="getFlag">
-      🚩
-    </button>
-    <button id="checkWin"> 
-      Check
-    </button>
-    <div class="main">
-      <div id="grid" class="grid"></div>
+    <div class="game-container">
+      <header class="game-header">
+        <h1 class="game-title">MINESWEEPER</h1>
+        <div class="game-info">
+          <div class="info-box">
+            <span class="info-label">Bombs</span>
+            <span class="info-value" id="bomb-count">15</span>
+          </div>
+          <div class="status-display" id="state">
+            <span class="status-text">Ready to Play</span>
+          </div>
+          <div class="info-box">
+            <span class="info-label">Time</span>
+            <span class="info-value" id="timer">000</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="controls-top">
+        <button
+          id="getFlag"
+          class="control-btn flag-btn"
+          title="Toggle Flag Mode"
+        >
+          <span class="btn-icon">🚩</span>
+          <span class="btn-text">Flag Mode</span>
+        </button>
+        <button
+          id="checkWin"
+          class="control-btn check-btn"
+          title="Check Win Status"
+        >
+          <span class="btn-icon">✓</span>
+          <span class="btn-text">Check</span>
+        </button>
+      </div>
+
+      <div class="game-board">
+        <div id="grid" class="grid"></div>
+      </div>
+
+      <div class="controls-bottom">
+        <button id="reset" type="button" class="control-btn primary-btn">
+          <span class="btn-icon">↻</span>
+          <span class="btn-text">New Game</span>
+        </button>
+        <button id="reveal" type="button" class="control-btn danger-btn">
+          <span class="btn-icon">👁</span>
+          <span class="btn-text">Reveal</span>
+        </button>
+        <button id="developer" type="button" class="control-btn dev-btn">
+          <span class="btn-icon">⚙</span>
+          <span class="btn-text">Dev Mode</span>
+        </button>
+      </div>
     </div>
-    <br/>
-    <button id="reset" type="button">Reset</button>
-    <button id="reveal" type="button">Reveal</button>
-    <button id="developer" type="button">Developer</button>
   </body>
   <script src="minesweeper.js"></script>
 </html>

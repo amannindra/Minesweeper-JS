@@ -15,6 +15,7 @@ let bombCount = 0;
 window.onload = function () {
   createGame();
   generateBombs();
+  updateBombCount();
 };
 
 //Tried making this function for 3 hours. I was so close. Ended using Chatgpt to fix it.
@@ -56,12 +57,14 @@ function resetGame() {
       cell.innerText = "";
       cell.setAttribute("isRevealedData", "false");
       cell.setAttribute("flagData", "false");
+      cell.className = "cell"; // Reset class list
     }
   }
   checkWin.innerText = "Check";
   bombCount = 0;
-  state.innerText = "Play Game";
+  state.innerHTML = '<span class="status-text">Ready to Play</span>';
   generateBombs();
+  updateBombCount();
 }
 //Self
 function generateBombs() {
@@ -77,16 +80,27 @@ function generateBombs() {
     }
   }
 }
+
+// Update bomb count display
+function updateBombCount() {
+  var bombCountDisplay = document.getElementById("bomb-count");
+  if (bombCountDisplay) {
+    bombCountDisplay.innerText = bombCount;
+  }
+}
 //Research with self
 function checkCell(e, row, column) {
   checkWin.innerText = "Check";
+  var statusText = state.querySelector(".status-text")
+    ? state.querySelector(".status-text").innerText
+    : state.innerText;
   if (
-    state.innerText === "You Lose!" ||
-    state.innerText === "You Won!" ||
-    state.innerText === "Revealed!"
+    statusText === "You Lose!" ||
+    statusText === "You Won!" ||
+    statusText === "Revealed!"
   ) {
     console.log("inner");
-    state.innerText = "Play Game";
+    state.innerHTML = '<span class="status-text">Ready to Play</span>';
     resetGame();
     return;
   }
@@ -106,8 +120,8 @@ function checkCell(e, row, column) {
       return;
     }
     if (cell.getAttribute("mineData") == "true") {
-      console.log("This Change 'You Lose': CheckCell  " )
-      state.innerText = "You Lose!";
+      console.log("This Change 'You Lose': CheckCell  ");
+      state.innerHTML = '<span class="status-text">You Lose!</span>';
       revealGame();
     } else {
       cell.setAttribute("isRevealedData", "true");
@@ -122,6 +136,7 @@ function checkCell(e, row, column) {
         spread(row, column);
       } else {
         cell.innerText = numberOfBombs;
+        cell.classList.add("number-" + numberOfBombs);
       }
     }
   }
@@ -152,6 +167,7 @@ function spread(row, column) {
             cell.innerText = bombsAround;
             cell.style.backgroundColor = "green";
             cell.setAttribute("isRevealedData", "true");
+            cell.classList.add("number-" + bombsAround);
           }
         }
       }
@@ -222,6 +238,7 @@ function revealGame() {
       } else {
         cell.innerText = numberOfBombs;
         cell.style.backgroundColor = "green";
+        cell.classList.add("number-" + numberOfBombs);
       }
       if (numberOfBombs == 0) {
         spread(i, j);
@@ -229,15 +246,19 @@ function revealGame() {
     }
   }
   checkWin.innerText = "Check";
-  console.log("Title 'You Lose': revealGame")
-  state.innerText = "You Lose!";
+  console.log("Title 'You Lose': revealGame");
+  state.innerHTML = '<span class="status-text">Revealed!</span>';
 }
 function enableflag() {
   flagMode = !flagMode;
   if (flagMode) {
-    flag.innerText = "🚩on";
+    flag.innerHTML =
+      '<span class="btn-icon">🚩</span><span class="btn-text">ON</span>';
+    flag.classList.add("active");
   } else {
-    flag.innerText = "🚩off";
+    flag.innerHTML =
+      '<span class="btn-icon">🚩</span><span class="btn-text">Flag Mode</span>';
+    flag.classList.remove("active");
   }
 }
 function didYouWin() {
@@ -251,12 +272,13 @@ function didYouWin() {
       ) {
         win += 1;
         console.log(win);
-      } 
+      }
     }
   }
   if (win === bombCount) {
-    state.innerText = "You Won!";
-    flag.innerText = "You Win!";
+    state.innerHTML = '<span class="status-text">You Won!</span>';
+    flag.innerHTML =
+      '<span class="btn-icon">🎉</span><span class="btn-text">You Win!</span>';
   }
 }
 reset.addEventListener("keypress", a);
