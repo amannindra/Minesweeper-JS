@@ -27,6 +27,13 @@ Time: 9:06
 
 I came back to the minesweeper website to check how to make the grid for the chess app. I am currently making. Upon playing the minesweeper, I found out there is a huge bug, so I spent the last 20 min trying to fix the bug. It is fixed, and now should work.
 
+
+Date: July 22, 2025
+
+Time: 10:26
+
+I was searching through my old repositories and I found this file. I looked at the website, and I found out that the frontend didn't look good, so I used cursor to fix up the frontend.
+
 Sources:
 https://stackoverflow.com/questions/45208347/create-a-10x10-field-of-cells
 
